@@ -7,6 +7,7 @@
 require 'app/lowrez.rb'
 require 'app/world.rb'
 require 'app/player.rb'
+require 'app/turret.rb'
 require 'app/bullet.rb'
 
 SCREEN_WIDTH=64
@@ -19,6 +20,7 @@ def init args
   # Create the various objects
   args.state.world = World.new args
   args.state.player = Player.new args
+  args.state.turrets = Array.new
   args.state.bullets = Array.new
 
 end
@@ -30,6 +32,7 @@ def update args
   # Get the various state objects to update
   args.state.world.update args
   args.state.player.update args
+  args.state.turrets.each { |turret| turret.update args }
   args.state.bullets.select! { |bullet| bullet.update args }
 
 end
@@ -44,6 +47,7 @@ def render args
   # Ask the state objects to render themselves
   args.state.world.render args
   args.state.player.render args
+  args.state.turrets.each { |turret| turret.render args }
   args.state.bullets.each { |bullet| bullet.render args }
 
 end
@@ -94,6 +98,7 @@ def render_debug args
     "Player.player_y:          #{args.state.player.player_y.to_i}",
     "Player.angle:             #{args.state.player.angle.to_i}",
     "Active bullets:           #{args.state.bullets.length}",
+    "Active turrets:           #{args.state.turrets.length}",
   ]
 
   args.outputs.debug << args.state

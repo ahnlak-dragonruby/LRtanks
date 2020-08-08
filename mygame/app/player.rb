@@ -13,7 +13,6 @@ class Player
   PLAYER_HEIGHT=9
   PLAYER_OFFSET_X=4
   PLAYER_OFFSET_Y=4
-  ANGLE_STEPS=90
 
 
   # Initialisor
@@ -36,10 +35,10 @@ class Player
 
     # Deal with any user input - turning first
     if args.inputs.keyboard.key_down.left || args.inputs.keyboard.key_down.a
-      @angle = ( @angle == 360 - ANGLE_STEPS ) ? 0 : @angle + ANGLE_STEPS
+      @angle = ( @angle == 360 - World::ANGLE_STEPS ) ? 0 : @angle + World::ANGLE_STEPS
     end
     if args.inputs.keyboard.key_down.right || args.inputs.keyboard.key_down.d
-      @angle = ( @angle == 0 ) ? 360 - ANGLE_STEPS : @angle - ANGLE_STEPS
+      @angle = ( @angle == 0 ) ? 360 - World::ANGLE_STEPS : @angle - World::ANGLE_STEPS
     end
 
     # And then firing, in the direction we're facing

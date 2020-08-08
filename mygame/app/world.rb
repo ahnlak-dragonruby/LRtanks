@@ -7,6 +7,7 @@ class World
   WORLD_WIDTH = 512
   WORLD_HEIGHT = 512
   FRICTION=255
+  ANGLE_STEPS=45
 
 
   # Initialisor
@@ -23,27 +24,39 @@ class World
     args.render_target( :render_land ).height = WORLD_HEIGHT
 
     # Just some backdrop stuff for now...
-    0.step(WORLD_HEIGHT, 8) do |i|
+    args.render_target( :render_land ).primitives << {
+      x: 0, y: 0, w: WORLD_WIDTH, h: WORLD_HEIGHT, path: 'sprites/background.png',
+    }.sprite
 
-      args.render_target( :render_land ).primitives << {
-        x: 0, y: i,
-        x2: WORLD_WIDTH, y2: i,
-        r: 200, g: 200, b: 200,
-      }.line
+    #0.step(WORLD_HEIGHT, 8) do |i|
 
-      args.render_target( :render_land ).primitives << {
-        x: i, y: 0,
-        x2: i, y2: WORLD_HEIGHT,
-        r: 200, g: 200, b: 200,
-      }.line
+    #  args.render_target( :render_land ).primitives << {
+    #    x: 0, y: i,
+    #    x2: WORLD_WIDTH, y2: i,
+    #    r: 200, g: 200, b: 200,
+    #  }.line
 
-    end
+    #  args.render_target( :render_land ).primitives << {
+    #    x: i, y: 0,
+    #    x2: i, y2: WORLD_HEIGHT,
+    #    r: 200, g: 200, b: 200,
+    #  }.line
+
+    #end
 
   end
 
 
   # Update handler
   def update args
+
+    # We need to make sure we have a suitable number of turrets active. This
+    # suitable number will increase as the game goes on, largely to screw with
+    # the player.
+    turret_count = 20 + ( args.tick_count / 600 )
+    while args.state.turrets.length < turret_count
+      args.state.turrets << Turret.new( args )
+    end
 
   end
 
